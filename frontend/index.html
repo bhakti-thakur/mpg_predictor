@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPG Predictor</title>
+</head>
+<body>
+    <h1>Car Fuel efficiency prediction</h1>
+    <h2>Enter car details</h2>
+    <form id="mpg_form">
+        Cylinders: <input type="number" id="Cylinders"/> <br/>
+        Displacement: <input type="number" id="Displacement"/> <br/>
+        Horsepower: <input type="number" id="Horsepower"/> <br/>
+        Weight: <input type="number" id="Weight"/> <br/>
+        Acceleration: <input type="number" id="Acceleration"/> <br/>
+        Model year: <input type="number" id="Model_year"/> <br/>
+        Origin Europe: <input type="number" id="Origin_Europe" value="0"/> <br/>
+        Origin Japan: <input type="number" id="Origin_Japan" value="0"/> <br/>
+        <button type="submit"> Predict </button>
+    </form>
+
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("mpg_form").onsubmit = async function(e) {
+            e.preventDefault()
+            const features = [
+                +document.getElementById("Cylinders").value,
+                +document.getElementById("Displacement").value,
+                +document.getElementById("Horsepower").value,
+                +document.getElementById("Weight").value,
+                +document.getElementById("Acceleration").value,
+                +document.getElementById("Model_year").value,
+                +document.getElementById("Origin_Europe").value,
+                +document.getElementById("Origin_Japan").value,
+            ];
+
+            const res = await fetch('http://localhost:5000/predict', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({features})
+            });
+
+            const data = await res.json();
+            document.getElementById("result").innerText = "Predicted MPG:" + data.mpg.toFixed(2);
+
+        };
+    </script>
+</body>
+</html>
