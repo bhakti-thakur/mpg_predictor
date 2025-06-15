@@ -5,9 +5,13 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://bhakti-thakur.github.io"])
 
 model = joblib.load('mpg_model.pkl')
+
+@app.route('/')
+def home():
+    return "MPG Predictor API Running!"
 
 @app.route('/predict', methods = ['POST'])
 def predict():
